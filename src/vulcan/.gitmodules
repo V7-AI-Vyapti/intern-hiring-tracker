@@ -1,0 +1,16 @@
+[submodule "file-management"]
+	path = file-management
+	url = git@github.com:V7-AI-Solutions/file-management.git
+    branch = vyapti-staging
+[submodule "data_tab"]
+	path = data_tab
+	url = git@github.com:V7-AI-Solutions/data_tab.git
+    branch = staging
+[submodule "process_management"]
+	path = process_management
+	url = git@github.com:V7-AI-Solutions/process_management.git
+    branch = staging
+[submodule "data_viz"]
+	path = data_viz
+	url = git@github.com:V7-AI-Solutions/data_viz.git
+    branch = staging

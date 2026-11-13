@@ -1,0 +1,37 @@
+const FILE_MANAGEMENT_FILES_TAGS: string[] = ['file-management/files'];
+const FILE_MANAGEMENT_FILE_META_DATA_TAGS: string[] = [
+    'file-management/file-meta-data',
+];
+const FILE_MANAGEMENT_FOLDERS_TAGS: string[] = ['file-management/folders'];
+const FILE_MANAGEMENT_FILE_FORMATS_TAGS: string[] = [
+    'file-management/file-formats',
+];
+
+const FILE_MANAGEMENT_MODULE = '';
+
+const FILE_MANAGEMENT_CONFIG = {
+    FILES_UPLOAD_ROUTE: `${FILE_MANAGEMENT_MODULE}/files`,
+    FILES_DOWNLOAD_URL_ROUTE: `${FILE_MANAGEMENT_MODULE}/files/:fileId/download-url`,
+    FILES_PREVIEW_URL_ROUTE: `${FILE_MANAGEMENT_MODULE}/files/:fileId/preview-url`,
+    FILES_DELETE_ROUTE: `${FILE_MANAGEMENT_MODULE}/files/:fileId`,
+    FILES_LIST_ROUTE: `${FILE_MANAGEMENT_MODULE}/files`,
+    FILES_TOOLS_LIST_ROUTE: `${FILE_MANAGEMENT_MODULE}/files/:fileId/tools`,
+    FILES_EXCEL_TO_CSV_ROUTE: `${FILE_MANAGEMENT_MODULE}/files/:fileId/tools/excel-to-csv`,
+    FILE_META_DATA_LIST_ROUTE: `${FILE_MANAGEMENT_MODULE}/file-meta-data`,
+    FILE_META_DATA_GET_ROUTE: `${FILE_MANAGEMENT_MODULE}/file-meta-data/:fileId`,
+    FILE_META_DATA_UPDATE_ROUTE: `${FILE_MANAGEMENT_MODULE}/file-meta-data/:fileId`,
+    FILE_META_DATA_DELETE_ROUTE: `${FILE_MANAGEMENT_MODULE}/file-meta-data/:fileId`,
+    FOLDERS_CREATE_ROUTE: `${FILE_MANAGEMENT_MODULE}/folders`,
+    FOLDERS_LIST_ROUTE: `${FILE_MANAGEMENT_MODULE}/folders`,
+    FOLDERS_UPDATE_ROUTE: `${FILE_MANAGEMENT_MODULE}/folders/:id`,
+    FOLDERS_DELETE_ROUTE: `${FILE_MANAGEMENT_MODULE}/folders/:id`,
+    FILE_FORMATS_LIST_ROUTE: `${FILE_MANAGEMENT_MODULE}/file-formats`,
+} as const;
+
+export {
+    FILE_MANAGEMENT_FILES_TAGS,
+    FILE_MANAGEMENT_FILE_META_DATA_TAGS,
+    FILE_MANAGEMENT_FOLDERS_TAGS,
+    FILE_MANAGEMENT_FILE_FORMATS_TAGS,
+    FILE_MANAGEMENT_CONFIG,
+};

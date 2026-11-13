@@ -1,0 +1,350 @@
+[
+    {
+        "entity_name": "team_member",
+        "description": "Recruiters and interviewers",
+        "fields": [
+            {
+                "field_name": "team_member_id",
+                "field_data_type": "AutoPK",
+                "attributes": {}
+            },
+            {
+                "field_name": "status",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "team",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "role",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "email",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "member_id",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "name",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            }
+        ]
+    },
+    {
+        "entity_name": "job_opening",
+        "description": "Internship openings",
+        "fields": [
+            {
+                "field_name": "title",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "team",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "status",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "job_opening_id",
+                "field_data_type": "AutoPK",
+                "attributes": {}
+            },
+            {
+                "field_name": "opening_id",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "location",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "stipend_inr",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "positions",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "posted_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "closes_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "interview_rounds",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "assessment_name",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "assessment_days",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "owner",
+                "field_data_type": "FK",
+                "attributes": {
+                    "target_entity": "team_member",
+                    "join_column": "member_id"
+                }
+            }
+        ]
+    },
+    {
+        "entity_name": "job_candidate",
+        "description": "Applications",
+        "fields": [
+            {
+                "field_name": "name",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "email",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "job_candidate_id",
+                "field_data_type": "AutoPK",
+                "attributes": {}
+            },
+            {
+                "field_name": "candidate_id",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "opening",
+                "field_data_type": "FK",
+                "attributes": {
+                    "target_entity": "job_opening",
+                    "join_column": "opening_id"
+                }
+            },
+            {
+                "field_name": "college",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "degree",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "graduation_year",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "source",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "resume_link",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "applied_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "stage",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "stage_updated_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "rejected_reason",
+                "field_data_type": "Text",
+                "attributes": {}
+            },
+            {
+                "field_name": "joining_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "notes",
+                "field_data_type": "Text",
+                "attributes": {}
+            }
+        ]
+    },
+    {
+        "entity_name": "job_assessment",
+        "description": "Take-home assessments",
+        "fields": [
+            {
+                "field_name": "job_assessment_id",
+                "field_data_type": "AutoPK",
+                "attributes": {}
+            },
+            {
+                "field_name": "assessment_id",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "candidate",
+                "field_data_type": "FK",
+                "attributes": {
+                    "target_entity": "job_candidate",
+                    "join_column": "candidate_id"
+                }
+            },
+            {
+                "field_name": "reviewer",
+                "field_data_type": "FK",
+                "attributes": {
+                    "target_entity": "team_member",
+                    "join_column": "member_id"
+                }
+            },
+            {
+                "field_name": "sent_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "due_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "submitted_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "submission_link",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "score",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "result",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "reviewed_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            }
+        ]
+    },
+    {
+        "entity_name": "job_interview",
+        "description": "Interviews",
+        "fields": [
+            {
+                "field_name": "status",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "candidate",
+                "field_data_type": "FK",
+                "attributes": {
+                    "target_entity": "job_candidate",
+                    "join_column": "candidate_id"
+                }
+            },
+            {
+                "field_name": "job_interview_id",
+                "field_data_type": "AutoPK",
+                "attributes": {}
+            },
+            {
+                "field_name": "interview_id",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "round",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "interviewer",
+                "field_data_type": "FK",
+                "attributes": {
+                    "target_entity": "team_member",
+                    "join_column": "member_id"
+                }
+            },
+            {
+                "field_name": "scheduled_at",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "mode",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "rating",
+                "field_data_type": "Integer",
+                "attributes": {}
+            },
+            {
+                "field_name": "recommendation",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            },
+            {
+                "field_name": "feedback",
+                "field_data_type": "Text",
+                "attributes": {}
+            },
+            {
+                "field_name": "feedback_on",
+                "field_data_type": "CharacterString",
+                "attributes": {}
+            }
+        ]
+    }
+]

@@ -1,0 +1,12 @@
+{
+    "entity_name": "role",
+    "rows": [
+        {
+            "name": "Admin",
+            "label": "Admin",
+            "hint": null,
+            "is_system": true,
+            "full_access": true
+        }
+    ]
+}

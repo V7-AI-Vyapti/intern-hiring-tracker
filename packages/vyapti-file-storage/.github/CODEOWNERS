@@ -1,0 +1,5 @@
+# CODEOWNERS for staging branch
+# Reviewers required: PR’s can be merged in staging by Vikas and Pawan. Only leads can bypass the branch protection rules and merge directly to these branches.
+# In DevOps: Ramganesh can merge if he is contributor
+
+* @pawangupta-v7ai @vikash-v7 @ram-devopsforge

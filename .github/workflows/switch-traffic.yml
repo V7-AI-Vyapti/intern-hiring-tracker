@@ -1,0 +1,54 @@
+name: Switch Traffic (Promote)
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_slug:
+        description: Project slug
+        required: true
+        type: string
+      target_port:
+        description: Optional host port (omit to auto-detect green container port)
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  switch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy scripts to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          source: ".github/scripts/*"
+          target: "/tmp/v7ai-scripts"
+          strip_components: 2
+
+      - name: Switch Nginx Traffic
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            set -e
+            SCRIPTS="/tmp/v7ai-scripts"
+            chmod +x "$SCRIPTS"/*.sh
+
+            PROJECT_SLUG="${{ inputs.project_slug }}"
+            TARGET_PORT="${{ inputs.target_port }}"
+
+            if [ -n "$TARGET_PORT" ]; then
+              "$SCRIPTS/switch-traffic.sh" "$PROJECT_SLUG" "$TARGET_PORT"
+            else
+              "$SCRIPTS/switch-traffic.sh" "$PROJECT_SLUG"
+            fi

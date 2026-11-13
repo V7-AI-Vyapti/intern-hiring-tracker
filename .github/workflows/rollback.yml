@@ -1,0 +1,62 @@
+name: Direct Rollback by Image Tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_slug:
+        description: Project slug
+        required: true
+        type: string
+      generated_image_tag:
+        description: Docker image tag to rollback to (e.g. gen-1)
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set lowercase owner
+        id: repo
+        run: echo "REPO=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
+      - name: Copy scripts to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          source: ".github/scripts/*"
+          target: "/tmp/v7ai-scripts"
+          strip_components: 2
+
+      - name: Execute Direct Rollback
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ vars.SSH_PORT }}
+          script: |
+            set -e
+            export PATH="/home/v7aisolution/.nvm/versions/node/v24.14.0/bin:$PATH"
+
+            SCRIPTS="/tmp/v7ai-scripts"
+            chmod +x "$SCRIPTS"/*.sh
+
+            PROJECT_SLUG="${{ inputs.project_slug }}"
+            IMAGE_TAG="${{ inputs.generated_image_tag }}"
+            REPO="${{ steps.repo.outputs.REPO }}"
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            "$SCRIPTS/rollback.sh" \
+              "$PROJECT_SLUG" \
+              "$REPO" \
+              "$IMAGE_TAG" \
+              "$SCRIPTS"

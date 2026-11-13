@@ -1,0 +1,32 @@
+[
+    {
+        "configured_tool_name": "excel_to_csv_xls",
+        "description": "Convert XLS workbook to CSV",
+        "tool_type_name": "file_management",
+        "api_endpoint": {
+            "api_endpoint_name": "excel_to_csv_xls_trigger",
+            "api_endpoint_path": "/files/:fileId/tools/excel-to-csv",
+            "api_method_type": "post",
+            "api_content_type": "application/json"
+        },
+        "target_entity_name": null,
+        "additional_json_data": {
+            "source_file_format_name": "XLS"
+        }
+    },
+    {
+        "configured_tool_name": "excel_to_csv_xlsx",
+        "description": "Convert XLSX workbook to CSV",
+        "tool_type_name": "file_management",
+        "api_endpoint": {
+            "api_endpoint_name": "excel_to_csv_xlsx_trigger",
+            "api_endpoint_path": "/files/:fileId/tools/excel-to-csv",
+            "api_method_type": "post",
+            "api_content_type": "application/json"
+        },
+        "target_entity_name": null,
+        "additional_json_data": {
+            "source_file_format_name": "XLSX"
+        }
+    }
+]

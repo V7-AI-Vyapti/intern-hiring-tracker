@@ -1,0 +1,52 @@
+{
+    "name": "@vyapti/auth",
+    "version": "1.0.0",
+    "description": "Shared NestJS auth module for the Vyapti control plane and generated projects",
+    "private": true,
+    "license": "UNLICENSED",
+    "type": "module",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "clean": "rm -rf dist",
+        "test": "tsx --test src/__tests__/*.test.ts"
+    },
+    "dependencies": {
+        "@vyapti/core": "workspace:*",
+        "bcryptjs": "^2.4.3",
+        "jsonwebtoken": "^9.0.2"
+    },
+    "peerDependencies": {
+        "@nestjs/common": "^11.0.0",
+        "@nestjs/core": "^11.0.0",
+        "@nestjs/swagger": "^11.0.0",
+        "nestjs-zod": "^5.0.0",
+        "reflect-metadata": "^0.2.0",
+        "rxjs": "^7.8.0",
+        "zod": "^4.0.0"
+    },
+    "devDependencies": {
+        "@nestjs/common": "^11.0.1",
+        "@nestjs/core": "^11.0.1",
+        "@nestjs/swagger": "^11.2.6",
+        "@types/bcryptjs": "^2.4.6",
+        "@types/jsonwebtoken": "^9.0.9",
+        "@types/node": "^22.10.7",
+        "nestjs-zod": "^5.3.0",
+        "reflect-metadata": "^0.2.2",
+        "rxjs": "^7.8.1",
+        "tsx": "^4.21.0",
+        "typescript": "^5.7.3",
+        "zod": "^4.4.3"
+    }
+}

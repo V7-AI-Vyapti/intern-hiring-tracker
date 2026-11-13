@@ -1,0 +1,9 @@
+{
+    "entity_name": "rbac_catalog",
+    "rows": [
+        {
+            "resource": "rbac",
+            "actions": ["list", "view", "create", "update", "delete"]
+        }
+    ]
+}

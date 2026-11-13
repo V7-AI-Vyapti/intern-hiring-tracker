@@ -1,0 +1,23 @@
+# Deploy build for intern-hiring-tracker.
+# Takes precedence over repo-root .dockerignore, which excludes all of generated/*.
+
+node_modules
+.pnpm-store
+.turbo
+dist
+build
+.env
+.env.*
+.git
+.gitignore
+
+# Keep other runtime-generated apps out of the build context.
+generated/*
+!generated/intern-hiring-tracker/
+!generated/intern-hiring-tracker/**
+
+# Exclude heavy artifacts inside generated projects.
+generated/**/node_modules
+generated/**/dist
+generated/**/.turbo
+generated/**/tmp

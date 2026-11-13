@@ -1,0 +1,51 @@
+{
+    "name": "@vyapti/core",
+    "version": "1.0.0",
+    "description": "Vyapti base model and field primitives for generated Nest apps",
+    "private": true,
+    "license": "UNLICENSED",
+    "main": "./dist/custom_entities/index.js",
+    "types": "./dist/custom_entities/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/custom_entities/index.d.ts",
+            "default": "./dist/custom_entities/index.js"
+        },
+        "./custom_api": {
+            "types": "./dist/custom_api/index.d.ts",
+            "default": "./dist/custom_api/index.js"
+        },
+        "./custom_api_response": {
+            "types": "./dist/custom_api_response/index.d.ts",
+            "default": "./dist/custom_api_response/index.js"
+        },
+        "./file-ingest-tool-utils": {
+            "types": "./dist/file-ingest-tool-utils/index.d.ts",
+            "default": "./dist/file-ingest-tool-utils/index.js"
+        },
+        "./entity-ingest-tool-utils": {
+            "types": "./dist/entity-ingest-tool-utils/index.d.ts",
+            "default": "./dist/entity-ingest-tool-utils/index.js"
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "clean": "rm -rf dist"
+    },
+    "devDependencies": {
+        "@nestjs/common": "^11.0.1",
+        "@nestjs/swagger": "^11.2.6",
+        "reflect-metadata": "^0.2.2",
+        "typeorm": "^0.3.28",
+        "typescript": "^5.7.3"
+    },
+    "peerDependencies": {
+        "@nestjs/common": "^11.0.0",
+        "@nestjs/swagger": "^11.0.0",
+        "reflect-metadata": "^0.2.0",
+        "typeorm": "^0.3.0"
+    }
+}

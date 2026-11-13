@@ -1,0 +1,148 @@
+
+# Standalone compose file for GitHub-hosted project repositories.
+# Host ports come from .env.ports (written by .github/scripts/prepare-deploy.sh).
+x-generated-app-build: &generated-app-build
+  context: .
+  dockerfile: Dockerfile
+
+x-generated-app-env: &generated-app-env
+  NODE_ENV: "development"
+  PORT: "3000"
+  API_PREFIX: "api"
+  APP_NAME: "Intern Hiring Tracker"
+  DB_TYPE: postgres
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_USERNAME: "postgres"
+  DB_PASSWORD: "postgres"
+  DB_DATABASE: "intern_hiring_tracker"
+  DB_SYNCHRONIZE: "true"
+  DB_LOGGING: "true"
+  QUEUE_REDIS_HOST: "redis"
+  QUEUE_REDIS_PORT: "6379"
+  QUEUE_REDIS_DB: "0"
+  AWS_S3_ENDPOINT: "http://minio:9000"
+  AWS_ACCESS_KEY_ID: "minioadmin"
+  AWS_SECRET_ACCESS_KEY: "minioadmin"
+  AWS_REGION: "us-east-1"
+  FILE_MANAGEMENT_BUCKET_NAME: "vyapti-be"
+  FILE_STORAGE_PUBLIC_BASE_URL: "http://127.0.0.1:${PORT_minio_9000:-9000}/vyapti-be"
+  VYAPTI_REPO_ROOT: "/app"
+
+x-generated-app-depends-on: &generated-app-depends-on
+  postgres:
+    condition: service_healthy
+  redis:
+    condition: service_healthy
+  minio-init:
+    condition: service_completed_successfully
+
+services:
+  platform:
+    build: *generated-app-build
+    container_name: intern-hiring-tracker-platform
+    ports:
+      - "${PORT_platform_3000:-3000}:3000"
+    env_file:
+      - .env
+    environment: *generated-app-env
+    depends_on: *generated-app-depends-on
+    volumes:
+      - ./tmp:/app/tmp
+    restart: unless-stopped
+
+  background-worker:
+    build: *generated-app-build
+    container_name: intern-hiring-tracker-background-worker
+    env_file:
+      - .env
+    environment:
+      <<: *generated-app-env
+      GENERATED_PROJECT_RUN_FIXTURES: "false"
+    depends_on: *generated-app-depends-on
+    volumes:
+      - ./tmp:/app/tmp
+    command: ["pnpm", "run", "worker:prod"]
+    restart: unless-stopped
+
+  postgres:
+    image: "postgres:16-alpine"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "intern_hiring_tracker"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U postgres -d intern_hiring_tracker",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  redis:
+    image: "redis:7-alpine"
+    container_name: intern-hiring-tracker-redis
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  minio:
+    image: "pgsty/silo:latest"
+    container_name: intern-hiring-tracker-minio
+    ports:
+      - "${PORT_minio_9000:-9000}:9000"
+      - "${PORT_minio_9001:-9011}:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: "minioadmin"
+      MINIO_ROOT_PASSWORD: "minioadmin"
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS http://127.0.0.1:9000/minio/health/live >/dev/null",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+
+  minio-init:
+    image: "pgsty/silo:latest"
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: /bin/sh
+    command:
+      - -c
+      - |
+        for i in $$(seq 1 30); do
+          if mc alias set local http://minio:9000 minioadmin minioadmin; then
+            mc ls local/vyapti-be >/dev/null 2>&1 || mc mb local/vyapti-be
+            exit 0
+          fi
+          sleep 1
+        done
+        echo "MinIO alias or bucket setup failed after minio was healthy" >&2
+        exit 1
+    restart: "no"
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
